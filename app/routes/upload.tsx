@@ -58,7 +58,7 @@ const Upload = () => {
             feedback: "",
         }
 
-        await kv.set(`resume: ${uuid}`, JSON.stringify(data));
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
         setStatusText("Analyzing....");
 
@@ -77,11 +77,15 @@ const Upload = () => {
             feedback.message.content[0].text; //to extract the text from the Array
 
         data.feedback = JSON.parse(feedbackText);
-        await kv.set(`resume: ${uuid}`, JSON.stringify(data));
+        await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
         setStatusText("Analysis complete, redirecting...");
 
         console.log(data); //show all the data.
+
+        //This will redirect you to the specific real resume detail using the uuid after analyzing your CV.
+        //after this setStatusText("Analysis complete, redirecting...") navigate to the resume id..
+        navigate(`/resume/${uuid}`); //this gives us the real resume detial page.
 
     }
 
