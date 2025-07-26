@@ -1,3 +1,5 @@
+
+
 import {data, Link, useNavigate, useParams} from "react-router";
 import {useEffect, useState} from "react";
 import {usePuterStore} from "~/lib/puter";
@@ -74,16 +76,55 @@ const Resume = () => {
             //and now we can store it
             setImageUrl(imageUrl);
 
-            setFeedback(data.feedback);
+            //setFeedback(data.feedback);
+
+
+            //-------------------------------------------------------------------------------------->
+            //HELP FROM CHATGPT....
+            //C: TRANSFORM RAW FEEDBACK INTO EXPECTED STRUCTURE
+            if (data.feedback) {
+                const raw = data.feedback;
+
+                // Map the raw keys from backend to expected `Feedback` interface
+                const mappedFeedback: Feedback = {
+                    overallScore: raw.overall_rating || 0,
+                    ATS: {
+                        score: raw.ats_compatibility || 0,
+                        tips: raw.detailed_feedback?.ats_tips || [],
+                    },
+                    toneAndStyle: {
+                        score: raw.tone_and_style || 0,
+                        tips: raw.detailed_feedback?.tone_tips || [],
+                    },
+                    content: {
+                        score: raw.content_relevance || 0,
+                        tips: raw.detailed_feedback?.content_tips || [],
+                    },
+                    structure: {
+                        score: raw.format_and_design || 0,
+                        tips: raw.detailed_feedback?.structure_tips || [],
+                    },
+                    skills: {
+                        score: raw.skills_match || 0,
+                        tips: raw.detailed_feedback?.skills_tips || [],
+                    },
+                };
+
+                // now pass correctly structured feedback
+                setFeedback(mappedFeedback);
+            } else {
+                console.error("No feedback data found");
+            }
+
+            //-------------------------------------------------------------------------------------------->
+
 
             //check your data results
             console.log({resumeUrl, imageUrl, feedback: data.feedback});
         }
 
         //call the loadResume
-        loadResume().then(r => {
-            console.log(r);
-        });
+        loadResume();
     }, [id]); //the id to fetch
 
 

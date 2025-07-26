@@ -1,3 +1,10 @@
+import clsx, {type ClassValue} from "clsx";
+import {twMerge} from "tailwind-merge";
+
+export function cn(...inputs: ClassValue[]) {
+    return twMerge(clsx(inputs))
+}
+
 //Format a file size in byte to a human readable string (KB. MB, GB)
 // The function checks the byte size and converts it into the most appropriate unit (B, KB, MB, GB).
 // It uses toFixed(2) to ensure the size is shown with two decimal places, like 1.25 MB.
